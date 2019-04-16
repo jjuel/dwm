@@ -16,8 +16,8 @@ static const char col_cyan[]        = "#005577";
 /* #include "/home/jordan/.cache/wal/colors-wal-dwm.h" */
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { "#feefc6", "#000e1c", "#feefc6"  },
-	[SchemeSel]  = { "#feefc6", "#9c5419", "#003366"  },
+	[SchemeNorm] = { "#ebdbb2", "#282828", "#928374"  },
+	[SchemeSel]  = { "#ebdbb2", "#83a598", "#3c3836"  },
 };
 
 /* tagging */
