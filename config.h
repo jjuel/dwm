@@ -49,6 +49,11 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
+#define XF86MonBrightnessDown		0x1008ff03
+#define XF86MonBrightnessUp		0x1008ff02
+#define XF86AudioMute		        0x1008ff12
+#define XF86AudioLowerVolume		0x1008ff11
+#define XF86AudioRaiseVolume		0x1008ff13
 #define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -66,7 +71,11 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *firefoxcmd[] = { "firefox", NULL };
 static const char *rangercmd[] = { "st", "-e", "ranger", NULL };
 static const char *surfcmd[] = { "surf google.com", NULL };
-
+static const char *cmdbrightnessup[]  = { "sudo", "brightnessctl", "set", "+10%", NULL };
+static const char *cmdbrightnessdown[]  = { "sudo", "brightnessctl", "set", "10%-", NULL };
+static const char *cmdsoundup[]  = { "amixer", "-q", "sset", "Master", "5%+", NULL };
+static const char *cmdsounddown[]  = { "amixer", "-q", "sset", "Master", "5%-", NULL };
+static const char *cmdsoundtoggle[]  = { "amixer", "-q", "sset", "Master", "toggle", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -97,6 +106,12 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F1,     spawn,          {.v = surfcmd } },
 	{ MODKEY,                       XK_F2,     spawn,          {.v = firefoxcmd } },
 	{ MODKEY,                       XK_F3,     spawn,          {.v = rangercmd } },
+
+	{ 0,                            XF86MonBrightnessDown,     spawn,         {.v = cmdbrightnessdown } },
+	{ 0,                            XF86MonBrightnessUp,       spawn,         {.v = cmdbrightnessup } },
+	{ 0,                            XF86AudioMute,             spawn,          {.v = cmdsoundtoggle } },
+	{ 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } },
+	{ 0,                            XF86AudioLowerVolume,      spawn,          {.v = cmdsounddown } },
 	
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
