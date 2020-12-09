@@ -6,14 +6,13 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Fira Code:size=12" };
-static const char dmenufont[]       = "Fira Sans:size=12";
+static const char *fonts[]          = { "JetBrains Mono:size=13" };
+static const char dmenufont[]       = "JetBrians Mono:size=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
-/* #include "/home/jordan/.cache/wal/colors-wal-dwm.h" */
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { "#839496", "#002b36", "#073642"  },
@@ -31,7 +30,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "Chrome",   NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Surf",     NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Emacs",    NULL,       NULL,       1 << 1,       0,           -1 },
 };
@@ -41,20 +40,27 @@ static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] *
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+
+	{ "[@]",      spiral },
+	{ "[\\]",     dwindle },
+
+	{ "|M|",      centeredmaster },
+	{ ">M>",      centeredfloatingmaster},
 };
 
 /* key definitions */
 #define XF86MonBrightnessDown		0x1008ff03
-#define XF86MonBrightnessUp		0x1008ff02
+#define XF86MonBrightnessUp		    0x1008ff02
 #define XF86AudioMute		        0x1008ff12
 #define XF86AudioLowerVolume		0x1008ff11
 #define XF86AudioRaiseVolume		0x1008ff13
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -67,10 +73,10 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", "#002b36", "-nf", "#839496", "-sb", "#839496", "-sf", "#002b36", NULL };
+static const char *roficmd[]  = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
-static const char *firefoxcmd[] = { "firefox", NULL };
-static const char *rangercmd[] = { "alacritty", "-e", "ranger", NULL };
-static const char *surfcmd[] = { "surf google.com", NULL };
+static const char *chromecmd[] = { "chrome", NULL };
+static const char *emacscmd[] = { "emacs", NULL };
 static const char *cmdbrightnessup[]  = { "sudo", "brightnessctl", "set", "+10%", NULL };
 static const char *cmdbrightnessdown[]  = { "sudo", "brightnessctl", "set", "10%-", NULL };
 static const char *cmdsoundup[]  = { "amixer", "-q", "sset", "Master", "5%+", NULL };
@@ -79,7 +85,7 @@ static const char *cmdsoundtoggle[]  = { "amixer", "-q", "sset", "Master", "togg
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = roficmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -94,6 +100,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_r,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY|ShiftMask,             XK_r,      setlayout,      {.v = &layouts[4]} },
+	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[5]} },
+	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[6]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
@@ -103,15 +113,14 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
-	{ MODKEY,                       XK_F1,     spawn,          {.v = surfcmd } },
-	{ MODKEY,                       XK_F2,     spawn,          {.v = firefoxcmd } },
-	{ MODKEY,                       XK_F3,     spawn,          {.v = rangercmd } },
+	{ MODKEY,                       XK_e,      spawn,          {.v = emacscmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = chromecmd } },
 
-	{ 0,                            XF86MonBrightnessDown,     spawn,         {.v = cmdbrightnessdown } },
-	{ 0,                            XF86MonBrightnessUp,       spawn,         {.v = cmdbrightnessup } },
-	{ 0,                            XF86AudioMute,             spawn,          {.v = cmdsoundtoggle } },
-	{ 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } },
-	{ 0,                            XF86AudioLowerVolume,      spawn,          {.v = cmdsounddown } },
+	/* { 0,                            XF86MonBrightnessDown,     spawn,         {.v = cmdbrightnessdown } }, */
+	/* { 0,                            XF86MonBrightnessUp,       spawn,         {.v = cmdbrightnessup } }, */
+	/* { 0,                            XF86AudioMute,             spawn,          {.v = cmdsoundtoggle } }, */
+	/* { 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } }, */
+	/* { 0,                            XF86AudioLowerVolume,      spawn,          {.v = cmdsounddown } }, */
 	
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
