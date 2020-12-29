@@ -21,7 +21,6 @@ static const char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-/* static const char *tags[] = { "", "🌎", "", "", "", "", "", "🎵", " };*/ 
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -75,13 +74,13 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", "#002b36", "-nf", "#839496", "-sb", "#839496", "-sf", "#002b36", NULL };
 static const char *roficmd[]  = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
-static const char *chromecmd[] = { "chrome", NULL };
+static const char *chromecmd[] = { "brave", NULL };
 static const char *emacscmd[] = { "emacs", NULL };
 static const char *cmdbrightnessup[]  = { "sudo", "brightnessctl", "set", "+10%", NULL };
 static const char *cmdbrightnessdown[]  = { "sudo", "brightnessctl", "set", "10%-", NULL };
-static const char *cmdsoundup[]  = { "amixer", "-q", "sset", "Master", "5%+", NULL };
-static const char *cmdsounddown[]  = { "amixer", "-q", "sset", "Master", "5%-", NULL };
-static const char *cmdsoundtoggle[]  = { "amixer", "-q", "sset", "Master", "toggle", NULL };
+static const char *cmdsoundup[]  = { "pamixer", "--allow-boost", "-i", "5", NULL };
+static const char *cmdsounddown[]  = { "pamixer", "--allow-boost", "-d", "5", NULL };
+static const char *cmdsoundtoggle[]  = { "pamixer", "--allow-boost", "t", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -116,11 +115,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_e,      spawn,          {.v = emacscmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = chromecmd } },
 
-	/* { 0,                            XF86MonBrightnessDown,     spawn,         {.v = cmdbrightnessdown } }, */
-	/* { 0,                            XF86MonBrightnessUp,       spawn,         {.v = cmdbrightnessup } }, */
-	/* { 0,                            XF86AudioMute,             spawn,          {.v = cmdsoundtoggle } }, */
-	/* { 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } }, */
-	/* { 0,                            XF86AudioLowerVolume,      spawn,          {.v = cmdsounddown } }, */
+	{ 0,                            XF86MonBrightnessDown,     spawn,         {.v = cmdbrightnessdown } },
+	{ 0,                            XF86MonBrightnessUp,       spawn,         {.v = cmdbrightnessup } },
+	{ 0,                            XF86AudioMute,             spawn,          {.v = cmdsoundtoggle } },
+	{ 0,                            XF86AudioRaiseVolume,      spawn,          {.v = cmdsoundup } },
+	{ 0,                            XF86AudioLowerVolume,      spawn,          {.v = cmdsounddown } },
 	
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
