@@ -30,7 +30,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Chrome",   NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "Surf",     NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Emacs",    NULL,       NULL,       1 << 1,       0,           -1 },
 };
 
@@ -74,7 +74,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", "#002b36", "-nf", "#839496", "-sb", "#839496", "-sf", "#002b36", NULL };
 static const char *roficmd[]  = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
-static const char *chromecmd[] = { "brave", NULL };
+static const char *chromecmd[] = { "firefox", NULL };
 static const char *emacscmd[] = { "emacs", NULL };
 static const char *cmdbrightnessup[]  = { "sudo", "brightnessctl", "set", "+10%", NULL };
 static const char *cmdbrightnessdown[]  = { "sudo", "brightnessctl", "set", "10%-", NULL };
