@@ -83,10 +83,9 @@ static const char *chromecmd[] = {"firefox", NULL};
 static const char *emacscmd[] = {"emacs", NULL};
 static const char *cmdbrightnessup[] = {"brightnessctl", "set", "+10%", NULL};
 static const char *cmdbrightnessdown[] = {"brightnessctl", "set", "10%-", NULL};
-static const char *cmdsoundup[] = {"pamixer", "--allow-boost", "-i", "5", NULL};
-static const char *cmdsounddown[] = {"pamixer", "--allow-boost", "-d", "5",
-                                     NULL};
-static const char *cmdsoundtoggle[] = {"pamixer", "--allow-boost", "t", NULL};
+static const char *cmdsoundup[] = {"mixer", "vol", "+5", NULL};
+static const char *cmdsounddown[] = {"mixer", "vol", "-5", NULL};
+static const char *cmdsoundtoggle[] = {"mixermute", NULL};
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
@@ -121,8 +120,8 @@ static Key keys[] = {
     {MODKEY, XK_e, spawn, {.v = emacscmd}},
     {MODKEY, XK_w, spawn, {.v = chromecmd}},
 
-    {0, XF86MonBrightnessDown, spawn, {.v = cmdbrightnessdown}},
-    {0, XF86MonBrightnessUp, spawn, {.v = cmdbrightnessup}},
+    /* {0, XF86MonBrightnessDown, spawn, {.v = cmdbrightnessdown}}, */
+    /* {0, XF86MonBrightnessUp, spawn, {.v = cmdbrightnessup}}, */
     {0, XF86AudioMute, spawn, {.v = cmdsoundtoggle}},
     {0, XF86AudioRaiseVolume, spawn, {.v = cmdsoundup}},
     {0, XF86AudioLowerVolume, spawn, {.v = cmdsounddown}},
