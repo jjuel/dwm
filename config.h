@@ -79,7 +79,7 @@ static const char *dmenucmd[] = {
     "#839496",   "-sb", "#839496", "-sf", "#002b36", NULL};
 static const char *roficmd[] = {"rofi", "-show", "run", NULL};
 static const char *termcmd[] = {"kitty", NULL};
-static const char *chromecmd[] = {"microsoft-edge-dev", NULL};
+static const char *chromecmd[] = {"firefox", NULL};
 static const char *emacscmd[] = {"emacs", NULL};
 static const char *cmdbrightnessup[] = {"brightnessctl", "set", "+10%", NULL};
 static const char *cmdbrightnessdown[] = {"brightnessctl", "set", "10%-", NULL};
