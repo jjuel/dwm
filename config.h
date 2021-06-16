@@ -43,13 +43,13 @@ static const int resizehints =
 #include "fibonacci.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"[]=", tile}, /* first entry is default */
+    {"[@]", spiral}, /* first entry is default */
+    {"[]=", tile}, 
     {"><>", NULL}, /* no layout function means floating behavior */
     {"[M]", monocle},
-
-    {"[@]", spiral},         {"[\\]", dwindle},
-
-    {"|M|", centeredmaster}, {">M>", centeredfloatingmaster},
+    {"[\\]", dwindle},
+    {"|M|", centeredmaster}, 
+    {">M>", centeredfloatingmaster},
 };
 
 /* key definitions */
@@ -78,7 +78,7 @@ static const char *dmenucmd[] = {
     "dmenu_run", "-m",  dmenumon,  "-fn", dmenufont, "-nb", "#002b36", "-nf",
     "#839496",   "-sb", "#839496", "-sf", "#002b36", NULL};
 static const char *roficmd[] = {"rofi", "-show", "run", NULL};
-static const char *termcmd[] = {"alacritty", NULL};
+static const char *termcmd[] = {"kitty", NULL};
 static const char *chromecmd[] = {"firefox", NULL};
 static const char *emacscmd[] = {"emacs", NULL};
 static const char *cmdbrightnessup[] = {"brightnessctl", "set", "+10%", NULL};
@@ -101,10 +101,10 @@ static Key keys[] = {
     {MODKEY, XK_Return, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_c, killclient, {0}},
-    {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
+    {MODKEY, XK_t, setlayout, {.v = &layouts[3]}},
     {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
     {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
-    {MODKEY, XK_r, setlayout, {.v = &layouts[3]}},
+    {MODKEY, XK_r, setlayout, {.v = &layouts[0]}},
     {MODKEY | ShiftMask, XK_r, setlayout, {.v = &layouts[4]}},
     {MODKEY, XK_y, setlayout, {.v = &layouts[5]}},
     {MODKEY | ShiftMask, XK_y, setlayout, {.v = &layouts[6]}},
